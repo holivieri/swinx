@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31410.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Swinx.API", "Swinx.API\Swinx.API.csproj", "{D05CCFB6-EE02-4A66-83AC-7809DA5A5776}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Swinx.Entities", "Swinx.Entities\Swinx.Entities.csproj", "{BA19D0A5-2C2E-4CC1-9FBD-A5FD0E6CDD23}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D05CCFB6-EE02-4A66-83AC-7809DA5A5776}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D05CCFB6-EE02-4A66-83AC-7809DA5A5776}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D05CCFB6-EE02-4A66-83AC-7809DA5A5776}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D05CCFB6-EE02-4A66-83AC-7809DA5A5776}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA19D0A5-2C2E-4CC1-9FBD-A5FD0E6CDD23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA19D0A5-2C2E-4CC1-9FBD-A5FD0E6CDD23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA19D0A5-2C2E-4CC1-9FBD-A5FD0E6CDD23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA19D0A5-2C2E-4CC1-9FBD-A5FD0E6CDD23}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B1C0802F-B9B9-4B83-AEAC-7716CC6B9A3E}
+	EndGlobalSection
+EndGlobal
