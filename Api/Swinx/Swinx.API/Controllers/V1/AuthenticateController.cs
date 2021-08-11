@@ -45,9 +45,14 @@ namespace Swinx.APIControllers.V1
             // TODO we have to define the process
             var user = new User { UserName = model.Email, Email = model.Email };
             var result = await _userManager.CreateAsync(user, model.Password);
+            // Assign basic Role
+            await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, model.SelectedRole));
+            await _userManager.AddToRoleAsync(user, model.SelectedRole);
+            var roles = await _userManager.GetRolesAsync(user);
+            //end role
             if (result.Succeeded)
             {
-                return BuildToken(model, new List<string>(), user.Id);
+                return BuildToken(model, roles, user.Id, user.PhotoUrl);
             }
             else
             {
@@ -66,7 +71,7 @@ namespace Swinx.APIControllers.V1
             {
                 var user = await _userManager.FindByEmailAsync(UserModel.Email);
                 var roles = await _userManager.GetRolesAsync(user);
-                return BuildToken(UserModel, roles, user.Id);
+                return BuildToken(UserModel, roles, user.Id, user.PhotoUrl);
             }
             else
             {
@@ -88,7 +93,7 @@ namespace Swinx.APIControllers.V1
             var userWithRoles = await _userManager.FindByEmailAsync(email);
             var roles = await _userManager.GetRolesAsync(userWithRoles);
 
-            return BuildToken(user, roles, id.Value);
+            return BuildToken(user, roles, id.Value,"" );
 
         }
 
@@ -124,7 +129,7 @@ namespace Swinx.APIControllers.V1
             return Ok(roles);
         }
 
-        private UserToken BuildToken(UserModel UserModel, IList<string> roles, string Id)
+        private UserToken BuildToken(UserModel UserModel, IList<string> roles, string Id, string photoUrl)
         {
             var claims = new List<Claim>
             {
@@ -153,9 +158,12 @@ namespace Swinx.APIControllers.V1
 
             return new UserToken()
             {
+                UserId = Id,
+                Roles = roles.ToList(),
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
                 Expiration = expiration,
-                userName = UserModel.Email,
+                UserName = UserModel.Email,
+                PhotoUrl = photoUrl,
             };
         }
     }

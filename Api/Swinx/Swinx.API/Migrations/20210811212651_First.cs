@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Swinx.APIMigrations
+namespace Swinx.API.Migrations
 {
-    public partial class initial : Migration
+    public partial class First : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,6 +28,7 @@ namespace Swinx.APIMigrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserPassword = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhotoUrl = table.Column<string>(type: "nvarchar(350)", maxLength: 350, nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -46,22 +47,6 @@ namespace Swinx.APIMigrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "EmergencyContactPeople",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IsEnable = table.Column<bool>(type: "bit", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    LastName = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    PersonalEmail = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    WorkEmail = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EmergencyContactPeople", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -170,157 +155,20 @@ namespace Swinx.APIMigrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Patients",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    FirstName = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    CardNumber = table.Column<long>(type: "bigint", nullable: false),
-                    Birthdate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IsEnable = table.Column<bool>(type: "bit", nullable: false),
-                    UserId1 = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Patients", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Patients_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "EmergencyContactPhones",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    EmergencyContactId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PhoneType = table.Column<int>(type: "int", nullable: false),
-                    CountryCode = table.Column<int>(type: "int", nullable: false),
-                    AreaNumber = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EmergencyContactPhones", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_EmergencyContactPhones_EmergencyContactPeople_EmergencyContactId",
-                        column: x => x.EmergencyContactId,
-                        principalTable: "EmergencyContactPeople",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Allergies",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AllergyName = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    PatientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AdditionalInfo = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Allergies", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Allergies_Patients_PatientId",
-                        column: x => x.PatientId,
-                        principalTable: "Patients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Diseases",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DiseaseName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    PatientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Diseases", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Diseases_Patients_PatientId",
-                        column: x => x.PatientId,
-                        principalTable: "Patients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Medicines",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PatientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    MedicineName = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    Dosage = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    ImageUrl = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Medicines", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Medicines_Patients_PatientId",
-                        column: x => x.PatientId,
-                        principalTable: "Patients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PatientsContacts",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PatientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    EmergencyContactPersonId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AdditionalNotes = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PatientsContacts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PatientsContacts_EmergencyContactPeople_EmergencyContactPersonId",
-                        column: x => x.EmergencyContactPersonId,
-                        principalTable: "EmergencyContactPeople",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PatientsContacts_Patients_PatientId",
-                        column: x => x.PatientId,
-                        principalTable: "Patients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "fae7d481-7f89-4afc-b892-232df0b3aff7", "4e0aa809-65b7-4edc-8b1d-1550af2e6f33", "admin", "admin" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "81a1e84e-97a8-4733-88eb-277da1647d48", "d5dd70c4-c1c5-41fa-a8c4-7851298eb015", "admin", "admin" });
+                values: new object[] { "5a63404e-8af9-4ee6-a5da-ff751ecd450a", "da7a8f06-c4d3-457a-a887-34260fbd4cb1", "couple", "couple" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "83797a1e-ee6c-449c-803a-0c9d5ccebc1d", "9d11c68f-aaec-43d6-83e2-57aa02c18da9", "patient", "patient" });
-
-            migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "8f6f5cd0-348a-4760-b7d1-d35eb8c743f9", "57400600-a348-4948-a6a8-8e5d08083945", "user", "user" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Allergies_PatientId",
-                table: "Allergies",
-                column: "PatientId");
+                values: new object[] { "2d39ebfd-23af-4a77-957f-38eb906db3b8", "452b6805-8e98-4f07-98f6-bcaf8db82039", "single", "single" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -360,43 +208,10 @@ namespace Swinx.APIMigrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Diseases_PatientId",
-                table: "Diseases",
-                column: "PatientId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EmergencyContactPhones_EmergencyContactId",
-                table: "EmergencyContactPhones",
-                column: "EmergencyContactId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Medicines_PatientId",
-                table: "Medicines",
-                column: "PatientId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Patients_UserId1",
-                table: "Patients",
-                column: "UserId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PatientsContacts_EmergencyContactPersonId",
-                table: "PatientsContacts",
-                column: "EmergencyContactPersonId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PatientsContacts_PatientId",
-                table: "PatientsContacts",
-                column: "PatientId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Allergies");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -413,25 +228,7 @@ namespace Swinx.APIMigrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Diseases");
-
-            migrationBuilder.DropTable(
-                name: "EmergencyContactPhones");
-
-            migrationBuilder.DropTable(
-                name: "Medicines");
-
-            migrationBuilder.DropTable(
-                name: "PatientsContacts");
-
-            migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "EmergencyContactPeople");
-
-            migrationBuilder.DropTable(
-                name: "Patients");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
