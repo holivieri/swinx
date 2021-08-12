@@ -9,7 +9,7 @@ class UserPreferences {
 
   static final UserPreferences _instance = UserPreferences._internal();
 
-  SharedPreferences _userPreferences;
+  late SharedPreferences _userPreferences;
 
   bool get isInitialized => _userPreferences != null;
 
