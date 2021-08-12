@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swinx/ui/pages/login_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -8,16 +9,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'SwinX',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('SwinX'),
-        ),
-        body: Center(
-          child: Container(
-            child: Text('Hello World'),
-          ),
-        ),
-      ),
+      home: LoginPage(),
     );
   }
 }

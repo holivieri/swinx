@@ -30,7 +30,7 @@ const String fontFamily = 'ubuntu';
 
 const TextStyle titleStyle = TextStyle(
   fontSize: largeTextSize,
-  color: Colors.white,
+  color: Colors.black54,
 );
 
 const TextStyle seeAllStyle = TextStyle(

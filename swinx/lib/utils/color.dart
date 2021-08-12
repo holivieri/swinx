@@ -23,6 +23,11 @@ const themeHighlightBlue = Color.fromRGBO(0, 0, 255, 1);
 //Alert message
 const themeSuccess = themeHighlightGreen;
 const themeDanger = Color.fromRGBO(216, 2, 66, 1);
+//brand colors
+
+const facebookColor = Color.fromRGBO(66, 103, 178, 1);
+const googleColor = Color.fromRGBO(219, 68, 55, 1);
+const twitterColor = Color.fromRGBO(29, 161, 242, 1);
 
 const highlightGradient = LinearGradient(
   begin: Alignment.topRight,
