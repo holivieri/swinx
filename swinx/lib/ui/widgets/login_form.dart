@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:swinx/providers/app_provider.dart';
 import 'package:swinx/providers/login_form_provider.dart';
+import 'package:swinx/router/routes.dart';
 import 'package:swinx/services/user_service.dart';
+import 'package:swinx/ui/widgets/text_banner.dart';
 
 import 'package:swinx/utils/color.dart';
 import 'package:swinx/utils/font.dart';
@@ -155,6 +158,10 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   Widget _logInButton(BuildContext context, LoginFormProvider loginForm) {
+    final AppProvider appProvider = Provider.of<AppProvider>(
+      context,
+    );
+
     return ElevatedButton(
       onPressed: loginForm.isLoading
           ? null
@@ -163,13 +170,19 @@ class _LoginFormState extends State<LoginForm> {
 
               loginForm.isLoading = true;
               if (!loginForm.isValidForm()) return;
-              // TODO check against api
 
               final UserService userService = UserService();
-              userService.login(
+              final result = await userService.login(
                 username: loginForm.email,
                 password: loginForm.password,
               );
+              if (result.ok!) {
+                Navigator.pushReplacementNamed(context, homeRoute);
+              } else {
+                loginForm.isLoading = false;
+                appProvider.bannerText = result.responseMessage;
+                appProvider.bannerType = BannerType.error;
+              }
             },
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(themeBlue),

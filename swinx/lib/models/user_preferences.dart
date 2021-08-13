@@ -106,12 +106,6 @@ class UserPreferences {
     _userPreferences.setString('userId', value);
   }
 
-  String get apiUrl => _userPreferences.getString('apiUrl') ?? '';
-
-  set apiUrl(String apiUrl) {
-    _userPreferences.setString('apiUrl', apiUrl);
-  }
-
   String get selectedCulture =>
       _userPreferences.getString('selectedCulture') ?? 'en';
 

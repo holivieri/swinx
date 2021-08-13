@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:provider/provider.dart';
 import 'package:swinx/models/user_preferences.dart';
+import 'package:swinx/providers/app_provider.dart';
 import 'package:swinx/ui/pages/login_page.dart';
 
 void main() => runApp(MyApp());
@@ -16,8 +18,6 @@ class _MyAppState extends State<MyApp> {
     prefs.init();
 
     await dotenv.load(fileName: '.env');
-
-    prefs.apiUrl = 'https://localhost:44375/api/v1/';
   }
 
   @override
@@ -28,10 +28,17 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'SwinX',
-      home: LoginPage(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AppProvider>(
+          create: (_) => AppProvider(),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'SwinX',
+        home: LoginPage(),
+      ),
     );
   }
 }

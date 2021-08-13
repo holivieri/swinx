@@ -71,6 +71,14 @@ class UserService {
       _userPreferences.accessTokenExpiryDate = decodedResponse['expiration'];
     }
 
+    if (decodedResponse.containsKey('userId')) {
+      _userPreferences.userId = decodedResponse['userId'];
+    }
+
+    if (decodedResponse.containsKey('photoUrl')) {
+      _userPreferences.userProfileImageURL = decodedResponse['photoUrl'] ?? '';
+    }
+
     _userPreferences.userName = username;
 
     if (decodedResponse.containsKey('token')) {
