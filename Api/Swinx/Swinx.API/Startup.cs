@@ -75,7 +75,6 @@ namespace Swinx.API
                             .AllowAnyOrigin()
                             .AllowAnyHeader()
                             .WithExposedHeaders(new string[] { "totalRecordsCount" });
-                            //.WithOrigins("https://localhost:62060");
                 });
             });
             services.AddTransient<ISwinxDbContext, swinxDbContext>();
