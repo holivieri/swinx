@@ -6,6 +6,8 @@ import 'package:swinx/models/login_response_model.dart';
 
 import 'package:swinx/models/user_preferences.dart';
 
+import '../environment_config.dart';
+
 class UserService {
   UserPreferences _userPreferences = UserPreferences();
   final client = Client();
@@ -13,43 +15,40 @@ class UserService {
   Future<LoginResponseModel> login({
     required String username,
     required String password,
-    required String account,
   }) async {
     final _invalidLoginResponse =
         LoginResponseModel(ok: false, responseMessage: 'Invalid account'
             //AppTranslations.of(context).invalidAccountUsernamePassword,
             );
 
-    final endpointParameters = {
-      'clientid': account,
-      'username': username,
-      'password': password,
-      'deviceId': _userPreferences.deviceId,
-      'MobileOs': _userPreferences.platform,
+    final bodyParameters = {
+      'Email': username,
+      'Password': password,
     };
 
-    final url = '${_userPreferences.apiUrl}/token';
-
-    final response = await client.post(
-      Uri.parse(url),
-      headers: {
-        'Content-Type': formUrlEncoded,
-        'Authorization': 'Bearer token ${_userPreferences.accessToken}',
-      },
-      body: endpointParameters,
-    );
-
-    if (response.statusCode == 400 || response.statusCode == 401) {
-      return _invalidLoginResponse;
-    }
-
+    final url = '${EnvironmentConfig.apiUrl}/Authenticate/login';
     dynamic decodedResponse;
-
     try {
-      decodedResponse = json.decode(response.body);
-    } on Exception catch (error) {
-      print(error);
-      return _invalidLoginResponse;
+      final response = await client.post(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': applicationJson,
+        },
+        body: json.encode(bodyParameters),
+      );
+
+      if (response.statusCode == 400 || response.statusCode == 401) {
+        return _invalidLoginResponse;
+      }
+
+      try {
+        decodedResponse = json.decode(response.body);
+      } on Exception catch (error) {
+        print(error);
+        return _invalidLoginResponse;
+      }
+    } on Exception catch (e) {
+      print(e);
     }
 
     if (decodedResponse.containsKey('errorCode') &&
@@ -68,10 +67,8 @@ class UserService {
       );
     }
 
-    _userPreferences.accountName = account;
-
-    if (decodedResponse.containsKey('tokenExpiry')) {
-      _userPreferences.accessTokenExpiryDate = decodedResponse['tokenExpiry'];
+    if (decodedResponse.containsKey('expiration')) {
+      _userPreferences.accessTokenExpiryDate = decodedResponse['expiration'];
     }
 
     _userPreferences.userName = username;
