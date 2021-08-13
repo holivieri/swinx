@@ -72,9 +72,10 @@ namespace Swinx.API
                 opt.AddPolicy("CorsPolicy", policy =>
                 {
                     policy.AllowAnyMethod()
+                            .AllowAnyOrigin()
                             .AllowAnyHeader()
-                            .WithExposedHeaders(new string[] { "totalRecordsCount"})
-                            .WithOrigins("https://localhost:3000");
+                            .WithExposedHeaders(new string[] { "totalRecordsCount" });
+                            //.WithOrigins("https://localhost:62060");
                 });
             });
             services.AddTransient<ISwinxDbContext, swinxDbContext>();

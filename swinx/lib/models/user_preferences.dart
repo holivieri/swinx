@@ -11,7 +11,7 @@ class UserPreferences {
 
   late SharedPreferences _userPreferences;
 
-  bool get isInitialized => _userPreferences != null;
+  // bool get isInitialized => _userPreferences != null;
 
   Future<void> init() async {
     _userPreferences = await SharedPreferences.getInstance();

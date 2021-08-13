@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:swinx/providers/login_form_provider.dart';
+import 'package:swinx/services/user_service.dart';
 
 import 'package:swinx/utils/color.dart';
 import 'package:swinx/utils/font.dart';
 import 'package:swinx/utils/validations.dart';
 
 class LoginForm extends StatefulWidget {
-  //late final LoginFormProvider loginForm;
-
   @override
   _LoginFormState createState() => _LoginFormState();
 }
@@ -166,9 +165,11 @@ class _LoginFormState extends State<LoginForm> {
               if (!loginForm.isValidForm()) return;
               // TODO check against api
 
-              Future.delayed(Duration(seconds: 2), () {
-                loginForm.isLoading = false;
-              });
+              final UserService userService = UserService();
+              userService.login(
+                username: loginForm.email,
+                password: loginForm.password,
+              );
             },
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(themeBlue),

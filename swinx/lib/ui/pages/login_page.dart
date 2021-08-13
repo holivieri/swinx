@@ -16,7 +16,9 @@ class LoginPage extends StatelessWidget {
             TriangleBackground(
               color: themeBlue,
             ),
-            Center(child: LoginForm()),
+            Center(
+              child: LoginForm(),
+            ),
           ],
         ),
       ),
