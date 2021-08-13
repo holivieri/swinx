@@ -1,16 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:swinx/providers/login_form_provider.dart';
+
 import 'package:swinx/utils/color.dart';
 import 'package:swinx/utils/font.dart';
+import 'package:swinx/utils/validations.dart';
 
-class LoginForm extends StatelessWidget {
-  const LoginForm({Key? key}) : super(key: key);
+class LoginForm extends StatefulWidget {
+  //late final LoginFormProvider loginForm;
 
   @override
+  _LoginFormState createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
+  @override
   Widget build(BuildContext context) {
+    final LoginFormProvider loginForm = Provider.of<LoginFormProvider>(context);
+
     return Container(
-      height: 350,
+      height: 400,
       width: 500,
+      key: loginForm.formKey,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(25),
@@ -25,27 +37,30 @@ class LoginForm extends StatelessWidget {
           ),
         ],
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _formTitle(),
-          const SizedBox(
-            height: 40,
-          ),
-          _userTextBox(),
-          const SizedBox(
-            height: 10,
-          ),
-          _passwordTextBox(),
-          const SizedBox(
-            height: 20,
-          ),
-          _loginButtons(),
-          const SizedBox(
-            height: 30,
-          ),
-          _externalLoginOptions(),
-        ],
+      child: Form(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _formTitle(),
+            const SizedBox(
+              height: 40,
+            ),
+            _userTextBox(loginForm),
+            const SizedBox(
+              height: 10,
+            ),
+            _passwordTextBox(loginForm),
+            const SizedBox(
+              height: 20,
+            ),
+            _loginButtons(context, loginForm),
+            const SizedBox(
+              height: 30,
+            ),
+            _externalLoginOptions(),
+          ],
+        ),
       ),
     );
   }
@@ -66,16 +81,26 @@ class LoginForm extends StatelessWidget {
     );
   }
 
-  Widget _userTextBox() {
+  Widget _userTextBox(LoginFormProvider loginForm) {
     final txt = TextEditingController();
 
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 30,
       ),
-      child: TextField(
+      child: TextFormField(
         autocorrect: false,
+        keyboardType: TextInputType.emailAddress,
         autofocus: true,
+        onChanged: (value) {
+          loginForm.email = value;
+        },
+        validator: (value) {
+          RegExp regExp = new RegExp(emailFormatPattern);
+          return regExp.hasMatch(value ?? '')
+              ? ''
+              : 'e-mail address is not valid';
+        },
         controller: txt,
         decoration: InputDecoration(
           border: OutlineInputBorder(),
@@ -89,18 +114,25 @@ class LoginForm extends StatelessWidget {
     );
   }
 
-  Widget _passwordTextBox() {
+  Widget _passwordTextBox(LoginFormProvider loginForm) {
     final txt = TextEditingController();
 
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 30,
       ),
-      child: TextField(
+      child: TextFormField(
         autocorrect: false,
         autofocus: true,
         controller: txt,
         obscureText: true,
+        onChanged: (value) {
+          loginForm.password = value;
+        },
+        validator: (value) {
+          if (value != null && value.length > 5) return null;
+          return 'Password should not be empty and has at least 6 chars';
+        },
         decoration: InputDecoration(
           border: OutlineInputBorder(),
           icon: Icon(
@@ -113,19 +145,31 @@ class LoginForm extends StatelessWidget {
     );
   }
 
-  Widget _loginButtons() {
+  Widget _loginButtons(BuildContext context, LoginFormProvider loginForm) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        _logInButton(),
+        _logInButton(context, loginForm),
         _forgotPasswordButton(),
       ],
     );
   }
 
-  Widget _logInButton() {
+  Widget _logInButton(BuildContext context, LoginFormProvider loginForm) {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: loginForm.isLoading
+          ? null
+          : () async {
+              FocusScope.of(context).unfocus();
+
+              loginForm.isLoading = true;
+              if (!loginForm.isValidForm()) return;
+              // TODO check against api
+
+              Future.delayed(Duration(seconds: 2), () {
+                loginForm.isLoading = false;
+              });
+            },
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(themeBlue),
       ),
@@ -134,12 +178,12 @@ class LoginForm extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Icon(
-              Icons.login_sharp,
-            ),
+            loginForm.isLoading
+                ? CircularProgressIndicator()
+                : Icon(Icons.login_sharp),
             const SizedBox(width: 10),
             Text(
-              'Log In',
+              loginForm.isLoading ? 'Validating' : 'Log In',
               style: TextStyle(
                 color: Colors.white,
               ),

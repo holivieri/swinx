@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:swinx/utils/color.dart';
 
 class TriangleBackground extends StatelessWidget {
   final Color color;

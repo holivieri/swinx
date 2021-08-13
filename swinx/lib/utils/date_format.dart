@@ -9,7 +9,9 @@ class SwinxDateFormat {
 
     try {
       dateToConvert = DateTime.parse(date);
-    } on Exception catch (error) {}
+    } on Exception catch (error) {
+      print(error);
+    }
 
     try {
       dateToConvert = HttpDate.parse(date);
@@ -21,7 +23,9 @@ class SwinxDateFormat {
       final String day = date.substring(8, 10);
 
       return '$day $month';
-    } on Exception catch (error) {}
+    } on Exception catch (error) {
+      print(error);
+    }
 
     return date;
   }
