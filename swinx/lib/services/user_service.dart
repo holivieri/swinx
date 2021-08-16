@@ -16,11 +16,6 @@ class UserService {
     required String username,
     required String password,
   }) async {
-    final _invalidLoginResponse =
-        LoginResponseModel(ok: false, responseMessage: 'Invalid account'
-            //AppTranslations.of(context).invalidAccountUsernamePassword,
-            );
-
     final bodyParameters = {
       'Email': username,
       'Password': password,
@@ -38,19 +33,22 @@ class UserService {
       );
 
       if (response.statusCode == 400 || response.statusCode == 401) {
-        return _invalidLoginResponse;
+        return invalidLoginResponse;
       }
 
       try {
         decodedResponse = json.decode(response.body);
       } on Exception catch (error) {
         print(error);
-        return _invalidLoginResponse;
+        return invalidLoginResponse;
       }
     } on Exception catch (e) {
       print(e);
+      return serverNotAvailableResponse;
     }
-
+    if (decodedResponse == null) {
+      return serverNotAvailableResponse;
+    }
     if (decodedResponse.containsKey('errorCode') &&
         decodedResponse['errorCode'] == 'INVLIC') {
       return LoginResponseModel(
@@ -88,6 +86,6 @@ class UserService {
         token: decodedResponse['token'],
       );
     }
-    return _invalidLoginResponse;
+    return invalidLoginResponse;
   }
 }

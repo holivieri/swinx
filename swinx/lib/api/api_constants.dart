@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:swinx/models/login_response_model.dart';
 import 'package:swinx/models/user_preferences.dart';
 
 const formUrlEncoded = 'application/x-www-form-urlencoded';
@@ -22,3 +23,17 @@ Map<String, String> returnEzpulseHeaders({
     'deviceId': _userPreferences.deviceId,
   };
 }
+
+const String serverNotAvailable = 'Server is not available';
+
+const String invalidUserNameOrPassword = 'Invalid username or password';
+
+final invalidLoginResponse = LoginResponseModel(
+  ok: false,
+  responseMessage: invalidUserNameOrPassword,
+);
+
+final serverNotAvailableResponse = LoginResponseModel(
+  ok: false,
+  responseMessage: serverNotAvailable,
+);
