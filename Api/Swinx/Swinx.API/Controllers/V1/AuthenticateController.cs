@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Swinx.API.DTOs;
 using Swinx.APIDTOs;
 using Swinx.APIEntities;
 using Swinx.APIModels;
@@ -75,8 +76,12 @@ namespace Swinx.APIControllers.V1
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                return BadRequest(ModelState);
+                ModelState.AddModelError("Invalid Login", "Invalid login attempt.");
+                LoginErrorDTO errorModel = new LoginErrorDTO();
+                errorModel.ErrorCode = "INVLOG";
+                errorModel.ErrorMessage = "Invalid username or password";
+
+                return BadRequest(errorModel);
             }
         }
 
