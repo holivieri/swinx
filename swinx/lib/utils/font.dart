@@ -61,7 +61,7 @@ const TextStyle subtitleStyle = TextStyle(
 
 final TextStyle paragraphStyle = TextStyle(
   fontSize: mediumTextSize,
-  color: Colors.white.withOpacity(0.5),
+  color: Colors.white,
   fontFamily: 'Ubuntu',
 );
 

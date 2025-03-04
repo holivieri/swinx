@@ -54,7 +54,7 @@ const themeBackgroundGradient = LinearGradient(
 const errorRed = Color.fromRGBO(216, 2, 66, 1);
 const themeRed = Color.fromRGBO(229, 0, 0, 1);
 
-final Color whiteOpacity = Colors.white.withOpacity(0.3);
+final Color whiteOpacity = Colors.white;
 
 const disabledColorLightenedAmount = .25;
 

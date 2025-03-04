@@ -87,7 +87,7 @@ class NewsCard extends StatelessWidget {
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Ubuntu',
-                color: Colors.white.withOpacity(0.5),
+                color: Colors.white,
               ),
               maxLines: 4,
               overflow: TextOverflow.ellipsis,

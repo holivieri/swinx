@@ -20,7 +20,7 @@ class NavigationBarTablet extends StatelessWidget {
         children: [
           Row(
             children: [
-              DrawerButton(),
+              MyDrawerButton(),
               const NavBarLogo(),
             ],
           ),

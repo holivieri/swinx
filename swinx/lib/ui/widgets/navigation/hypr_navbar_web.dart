@@ -19,7 +19,7 @@ class NavigationBarWeb extends StatelessWidget {
         children: [
           Row(
             children: [
-              DrawerButton(),
+              MyDrawerButton(),
               const NavBarLogo(),
               const NavBarItem(iconType: ItemType.search),
             ],

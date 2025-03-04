@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class DrawerButton extends StatelessWidget {
+class MyDrawerButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _returnDrawerIcon(context);
