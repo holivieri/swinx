@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:swinx/utils/default_images.dart';
 import 'package:swinx/utils/text_style.dart';

@@ -185,7 +185,7 @@ class _LoginFormState extends State<LoginForm> {
               }
             },
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(themeBlue),
+        backgroundColor: WidgetStateProperty.all(themeBlue),
       ),
       child: Padding(
         padding: const EdgeInsets.all(5),
@@ -238,7 +238,7 @@ class _LoginFormState extends State<LoginForm> {
     return ElevatedButton(
       onPressed: () {},
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(googleColor),
+        backgroundColor: WidgetStateProperty.all(googleColor),
       ),
       child: Padding(
         padding: const EdgeInsets.all(5),
@@ -265,7 +265,7 @@ class _LoginFormState extends State<LoginForm> {
     return ElevatedButton(
       onPressed: () {},
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(facebookColor),
+        backgroundColor: WidgetStateProperty.all(facebookColor),
       ),
       child: Padding(
         padding: const EdgeInsets.all(5),
@@ -292,7 +292,7 @@ class _LoginFormState extends State<LoginForm> {
     return ElevatedButton(
       onPressed: () {},
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(twitterColor),
+        backgroundColor: WidgetStateProperty.all(twitterColor),
       ),
       child: Padding(
         padding: const EdgeInsets.all(5),
